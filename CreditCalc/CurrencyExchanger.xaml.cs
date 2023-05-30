@@ -16,5 +16,13 @@ namespace CreditCalc
         {
             InitializeComponent();
         }
+
+        private void USDChanged (object sender, TextChangedEventArgs e)
+        {
+            if (usdEntry.Text != "")
+            {
+                eurLabel.Text = (double.Parse(usdEntry.Text) * 1.075).ToString( );
+            }
+        }
     }
 }

@@ -12,66 +12,66 @@ namespace CreditCalc
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Calc : ContentPage
     {
-        private int selectedIndex = 0;
         public Calc()
         {
             InitializeComponent();
         }
 
-        void OnEntryTextChanged(object sender, TextChangedEventArgs e)
+        private void SliderValueChange(object sender, ValueChangedEventArgs e)
         {
-        }
+            SliderLabel.Text = $"{Slider.Value}%";
 
-        void OnEntryCompleted(object sender, EventArgs e)
-        {
-        }
-
-        public void percentSlider(object sender, ValueChangedEventArgs e)
-        {
-
-            try
+            if (LoanEntry.Text != "" && MonthEntry.Text != "")
             {
-                if (creditPicker.SelectedIndex != -1)
+                Calculation(LoanEntry.Text, MonthEntry.Text, PaymentTypePicker.SelectedIndex, Slider.Value);
+            }
+            else
+            {
+                MonthlyPaymentLabel.Text = "Ежемесячный платеж: ...";
+                TotalLabel.Text = "Общая сумма: ...";
+                OverpaymentLabel.Text = "Переплата: ...";
+            }
+        }
+
+        private void Calculation(string EntryLoanAmount, string EntryTermMonth, int PickerPayment, double Slider)
+        {
+            if (Convert.ToDouble(EntryTermMonth) != 0 && Convert.ToDouble(EntryLoanAmount) != 0)
+            {
+                switch (PickerPayment)
                 {
-                    if (double.Parse(sum.Text) > 0 && int.Parse(duration.Text) > 0)
-                    {
-                        switch (creditPicker.SelectedIndex)
+                    case 0:
                         {
-                            case 0:
-                                {
-                                    double newValue = e.NewValue / 100;
-                                    monthlyPayment.Text = $"Ежемесячный платеж: {Convert.ToString((Convert.ToDouble(sum.Text) + Convert.ToDouble(sum.Text) * newValue) / Convert.ToDouble(duration.Text))} Р";
-                                    sum.Text = $"Общая сумма: {Convert.ToString((Convert.ToDouble(sum.Text) + Convert.ToDouble(sum.Text) * newValue))} Р";
-                                }
-                                break;
-                            case 1:
-                                {
-                                    double newValue = e.NewValue / 100;
-                                    monthlyPayment.Text = $"Ежемесячный платеж: {Convert.ToString((Convert.ToDouble(sum.Text) / Convert.ToDouble(sum.Text) * newValue) / Convert.ToDouble(duration.Text))} Р";
-                                    sum.Text = $"Общая сумма: {Convert.ToString((Convert.ToDouble(sum.Text) * newValue))} Р";
-                                }
-                                break;
+                            double EveryMonthPay = (Convert.ToDouble(EntryLoanAmount) + Convert.ToDouble(EntryLoanAmount) * Slider / 100) / Convert.ToDouble(EntryTermMonth);
+
+                            MonthlyPaymentLabel.Text = $"Ежемесячный платеж: {Math.Round(((Convert.ToDouble(EntryLoanAmount) + Convert.ToDouble(EntryLoanAmount) * Slider / 100) / Convert.ToDouble(EntryTermMonth)), 2)}";
+                            TotalLabel.Text = $"Общая сумма: {Math.Round(EveryMonthPay * Convert.ToDouble(EntryTermMonth), 2)}";
+                            OverpaymentLabel.Text = $"Переплата: {Math.Round((Convert.ToDouble(EntryTermMonth) - Convert.ToDouble(EntryLoanAmount)), 2)}";
                         }
-                    }
-                    else
-                    {
-                        monthlyPayment.Text = $"Ежемесячный платеж: N/A";
-                        sum.Text = $"Общая сумма: N/A";
-                        overpayment.Text = $"Переплата: N/A";
-                    }
+                        break;
+                    case 1:
+                        {
+                            double EveryMonthPay = Convert.ToDouble(EntryLoanAmount) * (Slider + (Slider / (Math.Pow((1 + Slider), (Convert.ToDouble(EntryTermMonth)) - 1))));
+
+                            MonthlyPaymentLabel.Text = $"Ежемесячный платеж: {Math.Round(EveryMonthPay, 2)}";
+                            TotalLabel.Text = $"Общая сумма: {Math.Round(EveryMonthPay * (Convert.ToDouble(EntryTermMonth)), 2)}";
+                            OverpaymentLabel.Text = $"Переплата: {Math.Round(Math.Round((Convert.ToDouble(EntryTermMonth) - Convert.ToDouble(EntryLoanAmount))), 2)}";
+                        }
+                        break;
+                    default:
+                        {
+                            MonthlyPaymentLabel.Text = "Ежемесячный платеж:...";
+                            TotalLabel.Text = "Общая сумма:...";
+                            OverpaymentLabel.Text = "Переплата:...";
+                        }
+                        break;
                 }
             }
-            catch
+            else
             {
-                monthlyPayment.Text = $"Ежемесячный платеж: N/A";
-                sum.Text = $"Общая сумма: N/A";
-                overpayment.Text = $"Переплата: N/A";
+                MonthlyPaymentLabel.Text = "Ежемесячный платеж: N/A";
+                TotalLabel.Text = "Общая сумма: N/A";
+                OverpaymentLabel.Text = "Переплата: N/A";
             }
-        }
-
-        public void picker_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
