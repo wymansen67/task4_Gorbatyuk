@@ -4,6 +4,45 @@
              x:Class="CreditCalc.Calc"
              Title="Calculator">
     <ContentPage.Content>
-    <Label Text="Сумма кредита: " VerticalOptions="Start" HorizontalOptions="Start" Margin="30"/>
+        <StackLayout Orientation="Vertical">
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Сумма кредита: " VerticalOptions="Start" HorizontalOptions="Start" Margin="30" FontSize="20"/>
+                <Entry x:Name="summary" Placeholder="  Сумма  " TextChanged="OnEntryTextChanged" Completed="OnEntryCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="20"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Срок ( месяцы ): " VerticalOptions="Start" HorizontalOptions="Start" Margin="30" FontSize="20"/>
+                <Entry x:Name="duration" Placeholder="  Срок  " TextChanged="OnEntryTextChanged" Completed="OnEntryCompleted" VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="20"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Вид платежа: " VerticalOptions="Start" HorizontalOptions="Start" Margin="30" FontSize="20"/>
+                <Picker x:Name="creditPicker" Title = "        Тип платежа        " VerticalOptions="Start" HorizontalOptions="FillAndExpand" Margin="20" HorizontalTextAlignment="Center" SelectedIndexChanged="picker_SelectedIndexChanged">
+                    <Picker.Items>
+                        <x:String>Аннуитетный</x:String>
+                        <x:String>Дифференцированный</x:String>
+                    </Picker.Items>
+                </Picker>
+            </StackLayout>
+
+            <StackLayout>
+                <Label Text="Процентная ставка: " VerticalOptions="Start" HorizontalOptions="Center" Margin="30" FontSize="20"/>
+                <Slider x:Name="slider" Minimum="0" Maximum="100" ValueChanged="percentSlider"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Label x:Name="monthlyPayment" Text="Ежемесячный платеж: : " VerticalOptions="Start" HorizontalOptions="Center" Margin="30" FontSize="20"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Label x:Name="sum" Text="Общая сумма: " VerticalOptions="Start" HorizontalOptions="Center" Margin="30" FontSize="20"/>
+            </StackLayout>
+
+            <StackLayout>
+                <Label x:Name="overpayment" Text="Переплата: " VerticalOptions="Start" HorizontalOptions="Center" Margin="30" FontSize="20"/>
+            </StackLayout>
+
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -13,6 +13,6 @@ namespace CreditCalc
         public MainPage()
         {
             InitializeComponent();
-        }
+        }        
     }
 }

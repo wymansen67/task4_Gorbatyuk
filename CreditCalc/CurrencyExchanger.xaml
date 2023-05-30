@@ -4,6 +4,5 @@
              x:Class="CreditCalc.CurrencyExchanger"
              Title="Currency Exchanger">
     <ContentPage.Content>
-
     </ContentPage.Content>
 </ContentPage>
